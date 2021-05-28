@@ -16,14 +16,9 @@ const userSchema = new mongoose.Schema({
     },
 
     favouriteMovies: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'Movie'
-    }],
-
-    ratedMovies: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'Movie'
+        type: Object,
     }]
+    
 });
 
 userSchema.pre('save', function (next) {

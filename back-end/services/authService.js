@@ -31,7 +31,7 @@ const login = async (data) => {
 
     if (!user) throw ('Invalid username or password!');
 
-    const correctPassword = bcrypt.compareSync(password, user.password);
+    const correctPassword = bcrypt.compareSync(password.toString(), user.password);
 
     if (!correctPassword) throw ('Invalid Password!');
 
