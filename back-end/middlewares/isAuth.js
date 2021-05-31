@@ -1,6 +1,6 @@
 
 module.exports = (req, res, next) => {
-
+    
     if(!!res.locals.token){
         res.locals._id = res.locals.token._id;
         return next();

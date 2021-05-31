@@ -26,7 +26,7 @@ const register = async (data) => {
 
 const login = async (data) => {
     const { username, password } = { ...data };
-
+    console.log(data);
     const user = await User.findOne({ username: username.toLowerCase() });
 
     if (!user) throw ('Invalid username or password!');

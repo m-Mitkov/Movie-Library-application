@@ -3,17 +3,26 @@ const { BASE_URL, GET_MOVIE_BY_ID } = require('../enums/endPoints');
 
 const User = require('../models/User');
 
-async function getFavoriteMovies(idUser) {
-    const user = await User.findById(idUser);
-    const allMovies = {};
+async function getFavoriteMovies(idUser, page) {
+    const movieXpage = 5;
+    page--;
+    const skipNmovies = page * movieXpage;
 
-    for (let i = 0; i < user.favouriteMovies.length; i++) {
-        const currentMovieId = user.favouriteMovies[i].id;
+    const user = await User.findById(idUser);
+    const allMovies = [];
+
+    for (let i = skipNmovies; i < skipNmovies + movieXpage; i++) {
+        const currentMovieId = user.favouriteMovies[i]?.id;
+
+        if (!currentMovieId) {
+            break;
+        }
 
         const movie = await fetchData(BASE_URL + GET_MOVIE_BY_ID(currentMovieId));
+
         const movieDataPlusExtraProps = Object.assign(movie, user.favouriteMovies[i]);
 
-        allMovies[currentMovieId] = movieDataPlusExtraProps;
+        allMovies.push(movieDataPlusExtraProps)
     }
 
     return await allMovies;
@@ -22,19 +31,36 @@ async function getFavoriteMovies(idUser) {
 async function deleteMovieFromFavorites(userId, movieId) {
 
     const a = await User.findOne({ _id: { '$eq': userId } });
-    
+
     a.favouriteMovies.forEach((x, index) => {
 
-        if(x.id == movieId){
-          a.favouriteMovies.splice(index, 1);
+        if (x.id == movieId) {
+            a.favouriteMovies.splice(index, 1);
         }
     });
 
     return await a.save();
 }
 
+async function getMovieById(userId, id) {
+    // const a =  await User.findOne({_id: userId, }, { 'favouriteMovies.id':  id })
+    const user = await User.findById(userId);
+    let movie = '';
+
+    for (let i = 0; i < user.favouriteMovies.length; i++) {
+        if(user.favouriteMovies[i].id == id){
+            movie = user.favouriteMovies[i]
+            break;
+        }
+    }
+
+    const movieDataFromApi = await fetchData(BASE_URL + GET_MOVIE_BY_ID(id))
+
+    return Object.assign(movieDataFromApi, movie);
+}
+
 module.exports = {
-    // createMovie,
+    getMovieById,
     getFavoriteMovies,
     deleteMovieFromFavorites
 }
