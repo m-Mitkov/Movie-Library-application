@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -9,11 +10,42 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
 import style from './Register.module.css'
+import { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION } from '../../../actions/types';
+import { Context } from '../../../Store/Store';
+import { BASE_URL, REGISTER_USER } from '../../../consts/endPointsAPI';
+import { fetchServicePOSTnoCredentials } from '../../../services/fetchService';
+
 
 const Register = () => {
 
-    const submitData = () => {
+    const history = useHistory();
 
+    const { auth, notification } = useContext(Context);
+    const [, notifyDispatch] = notification;
+
+    const submitData = (e) => {
+        e.preventDefault();
+
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+        const rePassword = e.target.rePassword.value;
+
+        if (password !== rePassword) {
+            notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: 'Password must match each other!' } });
+        }
+        else {
+            fetchServicePOSTnoCredentials( BASE_URL + REGISTER_USER ,{username, password, rePassword})
+                .then(res => {
+
+                    if (res.error) throw new Error(res.error)
+
+                    notifyDispatch({ type: SUCCESS_NOTIFICATION, payload: { message: 'Successfull registration!' } })
+                    history.push('/');
+                })
+                .catch(err => {
+                    notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: err.message } });
+                });
+        }
     }
 
     return (

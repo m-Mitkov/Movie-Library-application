@@ -1,24 +1,29 @@
 
-export function fetchServiceGET (url, credentials, data) {
+export function fetchServiceGET(url, credentials) {
 
     return fetch(url, {
         method: 'GET',
-        'x-auth-token': credentials,
+        headers: {
+            'Content-type': 'application/json',
+            'token': credentials,
+        },
     })
-    .then(res => res.json());
+        .then(res => res.json());
 }
 
-export function fetchServicePOST (url, credentials, data) {
+export function fetchServicePOST(url, credentials, data) {
 
     return fetch(url, {
         method: 'POST',
-        'x-auth-token': credentials,
+        headers: {
+            'token': credentials,
+        },
         body: data
     })
-    .then(res => res.json());
+        .then(res => res.json());
 }
 
-export function fetchServicePOSTnoCredentials (url, data) {
+export function fetchServicePOSTnoCredentials(url, data) {
 
     return fetch(url, {
         method: 'POST',
@@ -27,14 +32,16 @@ export function fetchServicePOSTnoCredentials (url, data) {
         },
         body: JSON.stringify(data)
     })
-    .then(res => res.json());
+        .then(res => res.json());
 }
 
-export function fetchServiceDELETE (url, credentials, data) {
+export function fetchServiceDELETE(url, credentials, data) {
 
     return fetch(url, {
         method: 'DELETE',
-        'x-auth-token': credentials,
+        headers: {
+            'token': credentials,
+        }
     })
-    .then(res => res.json());
+        .then(res => res.json());
 }
