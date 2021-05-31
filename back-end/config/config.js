@@ -5,7 +5,7 @@ const config = {
         PORT: 7777,
         DB_CONNECTION: 'mongodb://localhost/movie-library',
         SECRET: 'thisIsASecret',
-        JWT_TOKEN: 'x-auth-token',
+        JWT_TOKEN: 'token',
         USER_CREDENTIALS: 'user-credentials',
         SALT_ROUNDS: 9,
     }
