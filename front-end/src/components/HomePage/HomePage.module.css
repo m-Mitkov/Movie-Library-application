@@ -1,0 +1,36 @@
+
+.container {
+   min-height: 100vh;
+}
+
+.welcomePart {
+    height: 50vh;
+    background-color: #F5F5F5;
+    
+}
+
+.moviesPreview {
+    height: 50vh;
+}
+
+.movieCardContainer {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-bottom: 1rem;
+    display: inline-flex;
+}
+
+.paging {
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 30%;    
+}
+
+.welcomeImg {
+    width: 100%;
+    height: 100%;
+}
+
+.authSide {
+    height: 50vh;
+}
