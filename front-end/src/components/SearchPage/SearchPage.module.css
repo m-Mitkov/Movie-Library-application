@@ -1,0 +1,11 @@
+
+.imageCover{
+    height: 15rem;
+    width: 15rem;
+    float: left;
+    margin-top: 5rem;
+}
+
+.dataWrapper {
+    padding-bottom: 3rem;
+}

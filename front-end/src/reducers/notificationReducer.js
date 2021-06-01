@@ -8,7 +8,6 @@ function notificationReducer(state, action) {
     switch (type) {
 
         case SUCCESS_NOTIFICATION:
-            console.log(payload);
             return {
                 ...state,
                 active: !state.active,
