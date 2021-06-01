@@ -40,11 +40,15 @@ const Login = () => {
                 authDispatch({type: LOGIN_SUCCESS, payload: res});
                 notifyDispatch({type: SUCCESS_NOTIFICATION, payload: {message: 'Successfull login!'}});
         })
-        .then(() => history.pushState('/'))
+        .then(() => history.push('/'))
         .catch(err => {
             notifyDispatch({type: ERROR_NOTIFICATION, payload: {message: err.message}});
 
         });
+    }
+
+    if(user.username){
+        history.push('/');
     }
 
     return (
