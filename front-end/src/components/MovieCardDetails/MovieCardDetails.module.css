@@ -1,0 +1,53 @@
+
+.root{
+    float: left;
+    margin-top: 3rem;
+    margin-right: 3rem;
+    margin-left: 3rem;
+}
+
+.movieCard {
+    margin-left: 3rem;
+    height: 20rem;
+    width: 50rem;
+}
+
+.dataWrapper {
+    float: left;
+    width: 100vw;
+    height: 100vh;
+}
+
+.title {
+    float: left;
+}
+
+.genres {
+    float: left;
+}
+
+.officialSite {
+    float: left;
+}
+
+.notes {
+    float: left;
+    margin-left: 5rem;
+}
+
+.section {
+    width: 100%;
+}
+
+.reviewHeader {
+    float: left;
+    margin-left: 3rem;
+}
+
+.review {
+    width: 100vh;
+}
+
+.summary {
+    text-align: left;
+}

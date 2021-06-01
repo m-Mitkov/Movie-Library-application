@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 
 import style from './Register.module.css'
@@ -22,6 +21,7 @@ const Register = () => {
 
     const { auth, notification } = useContext(Context);
     const [, notifyDispatch] = notification;
+    const [user] = auth;
 
     const submitData = (e) => {
         e.preventDefault();
@@ -34,7 +34,7 @@ const Register = () => {
             notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: 'Password must match each other!' } });
         }
         else {
-            fetchServicePOSTnoCredentials( BASE_URL + REGISTER_USER ,{username, password, rePassword})
+            fetchServicePOSTnoCredentials(BASE_URL + REGISTER_USER, { username, password, rePassword })
                 .then(res => {
 
                     if (res.error) throw new Error(res.error)
@@ -46,6 +46,10 @@ const Register = () => {
                     notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: err.message } });
                 });
         }
+    }
+
+    if (user.username) {
+        history.push('/');
     }
 
     return (

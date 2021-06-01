@@ -20,12 +20,12 @@ const MovieCard = (props) => {
         <Card className={style.root} onClick={getMovieDetails}>
             <CardActionArea className={style.test}>
                 <CardMedia
-                    movieId={props.movie.id}
+                    movieid={props?.movie?.id}
                     component="img"
-                    alt={props.movie.name}
+                    alt={props?.movie?.name}
                     height="210"
                     width="150"
-                    image={props.movie.image.original}
+                    image={props.movie?.image?.original}
                     className={style.movieCard}
                 />
             </CardActionArea>

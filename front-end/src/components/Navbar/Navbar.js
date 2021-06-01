@@ -1,10 +1,10 @@
 import { useRef, useContext } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, Redirect } from 'react-router-dom';
 
 import style from './Navbar.module.css';
 import { Button } from '@material-ui/core'
 import { BASE_URL, LOGOUT } from '../../consts/endPointsAPI';
-import { fetchServiceGET } from '../../services/fetchService';
+import { fetchServiceGETnoCredentials } from '../../services/fetchService';
 import { Context } from '../../Store/Store';
 import { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION, LOGOUT_SUCCESS } from '../../actions/types';
 
@@ -15,29 +15,29 @@ const Navbar = () => {
     const [notify, notifyDispatch] = notification;
 
     const history = useHistory();
-    const inputRef = useRef();
+    const searchDataRef = useRef();
 
-    const onClickHandler = () => {
-        const searchParam = inputRef.current.value;
+    const onSearchHandler = (e) => {
+        e.preventDefault();
+        
+        const searchParam = searchDataRef.current.value;
+        searchDataRef.current.value = '';
 
-        history.push({
-            pathname: `/search/${searchParam}`,
-            state: { searchData: searchParam }
-        })
+        history.push(`/search/${searchParam}`);
     }
 
     const handleLogout = () => {
-        fetchServiceGET(BASE_URL + LOGOUT, '', '')
-        .then( (res) => {
+        fetchServiceGETnoCredentials(BASE_URL + LOGOUT)
+            .then((res) => {
 
-            authDispatch({type: LOGOUT_SUCCESS});
-            notifyDispatch({type: SUCCESS_NOTIFICATION, payload: {message: res}})
-            history.push('/');
+                authDispatch({ type: LOGOUT_SUCCESS });
+                notifyDispatch({ type: SUCCESS_NOTIFICATION, payload: { message: res } });
+                history.push('/');
 
-        })
-        .catch(err => {
-            notifyDispatch({type: ERROR_NOTIFICATION, payload: {message: 'Please try again!'}})
-        });
+            })
+            .catch(err => {
+                notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: 'Please try again!' } })
+            });
     }
 
     return (
@@ -49,10 +49,10 @@ const Navbar = () => {
             {
                 user.username
                     ?
-                    <div className={style.logout}> 
+                    <div className={style.logout}>
                         <Button variant="outlined" color="primary"
-                        onClick={handleLogout}>
-                        Logout</Button>
+                            onClick={handleLogout}>
+                            Logout</Button>
                     </div>
 
                     : ''
@@ -60,14 +60,15 @@ const Navbar = () => {
 
             <form className={style.inputForm}>
 
-                <input type="text" ref={inputRef}
+                <input type="text" ref={searchDataRef}
                     className={style.inputData}
                     placeholder="Search by movie title..."
                 />
 
                 <Button variant="outlined"
+                    type="submit"
                     color="primary"
-                    onClick={onClickHandler}
+                    onClick={onSearchHandler}
                 >
                     Search</Button>
 
