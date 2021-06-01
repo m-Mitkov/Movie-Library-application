@@ -44,7 +44,12 @@ async function deleteMovieFromFavorites(userId, movieId) {
 
 async function getMovieById(userId, id) {
     // const a =  await User.findOne({_id: userId, }, { 'favouriteMovies.id':  id })
-    const user = await User.findById(userId);
+    let user =  await User.findById(userId);
+
+    // if(!user){
+    //     return await fetchData(BASE_URL + GET_MOVIE_BY_ID(id))
+    // }
+
     let movie = '';
 
     for (let i = 0; i < user.favouriteMovies.length; i++) {
@@ -59,10 +64,16 @@ async function getMovieById(userId, id) {
     return Object.assign(movieDataFromApi, movie);
 }
 
+async function getMovieByIdForGuest( id) {
+
+    return await fetchData(BASE_URL + GET_MOVIE_BY_ID(id))
+}
+
 module.exports = {
     getMovieById,
     getFavoriteMovies,
-    deleteMovieFromFavorites
+    deleteMovieFromFavorites,
+    getMovieByIdForGuest
 }
 
 
