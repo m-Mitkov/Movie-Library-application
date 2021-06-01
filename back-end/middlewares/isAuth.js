@@ -5,6 +5,6 @@ module.exports = (req, res, next) => {
         res.locals._id = res.locals.token._id;
         return next();
     }
-
-    res.json({error: 'You are not authenticated to perform this action!'});
+    next();
+    // res.json({error: 'You are not authenticated to perform this action!'});
 }

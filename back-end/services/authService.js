@@ -35,6 +35,12 @@ const login = async (data) => {
 
     if (!correctPassword) throw ('Invalid Password!');
 
+    const idsFavouriteMovies = [];
+    Object.values(user.favouriteMovies).forEach(x => {
+        idsFavouriteMovies.push(x.id);
+    });
+    
+
     const token = {
         _id: user._id,
         username: user.username,
@@ -43,6 +49,7 @@ const login = async (data) => {
     const userCredentials = {
         _id: user._id,
         username: user.username,
+        favouriteMoviesIds: idsFavouriteMovies
     }
 
     return {

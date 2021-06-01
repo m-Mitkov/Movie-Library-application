@@ -17,7 +17,7 @@ router.post('/:id', async (req, res) => {
         const userId = res.locals._id;
         const movieId = req.params.id;
         const rating = req.body.rating;
-
+        
          await ratingService.changeRating(userId, movieId, rating);
          res.json('Movie successfully updated!');
 

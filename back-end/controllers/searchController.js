@@ -13,7 +13,7 @@ router.get('/:data', async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.json({ error: 'Data currently unaviable!' });
+        res.json({ error: 'Data currently unavaliable!' });
     }
 });
 
