@@ -9,7 +9,7 @@ import { BASE_URL, GET_MOVIE_BY_SEARCH, MOVIE_FAVORITES } from '../../consts/end
 import { fetchServiceGETnoCredentials, fetchServicePOST, fetchServiceDELETE } from '../../services/fetchService';
 import { Context } from '../../Store/Store';
 import { ERROR_NOTIFICATION, SUCCESS_NOTIFICATION,
-     SUCCESS_ADD_MOVIE_FAVOURITES } from '../../actions/types';
+     SUCCESS_ADD_MOVIE_FAVOURITES,  SUCCESS_REMOVE_MOVIE_FAVOURITES } from '../../actions/types';
 
 const SearchPage = ({
     match
@@ -21,7 +21,7 @@ const SearchPage = ({
     const { auth, notification } = useContext(Context);
     const [user, authDispatch] = auth;
     const [notify, notifyDispatch] = notification;
-    const favouriteMoviesIds = new Set(user.favouriteMovies);
+    const favouriteMoviesIds = user.favouriteMovies;
 
     const [urlParam, setUrlParam] = useState();
     const [searchResult, setSearchResult] = useState();
@@ -48,7 +48,7 @@ const SearchPage = ({
             .then(res => {
                 if (res.error) throw new Error(res)
 
-                favouriteMoviesIds.add(idMovie);
+                favouriteMoviesIds.push(idMovie);
               
                 authDispatch({
                     type: SUCCESS_ADD_MOVIE_FAVOURITES,
@@ -61,7 +61,7 @@ const SearchPage = ({
                 });
             })
             .then(() => {
-                history.push(`/details/${idMovie}`);
+                history.push(`/search/${idMovie}`);
             })
             .catch(err => {
                 notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: err.message } });
@@ -71,10 +71,14 @@ const SearchPage = ({
 
     const removeFromFavouritesHandler = (e) => {
         const idMovie = e.currentTarget.getAttribute('movieId');
-
         fetchServiceDELETE(BASE_URL + MOVIE_FAVORITES(idMovie), user.token)
-            .then(res => {
-                if (res.error) throw new Error(res)
+        .then(res => {
+            if (res.error) throw new Error(res)
+
+                authDispatch({
+                    type: SUCCESS_REMOVE_MOVIE_FAVOURITES,
+                    payload: { movieId: idMovie }
+                });
 
                 notifyDispatch({
                     type: SUCCESS_NOTIFICATION,
@@ -111,7 +115,7 @@ const SearchPage = ({
                             {
                                 user.username
                                     ?
-                                    favouriteMoviesIds.has(x.show.id.toString())
+                                    favouriteMoviesIds?.includes(x.show.id.toString())
                                         ?
                                         <Button variant="outlined"
                                             color="primary"
@@ -121,7 +125,7 @@ const SearchPage = ({
                                             onClick={removeFromFavouritesHandler}
 
                                         >
-                                            Remove from Favourites 123456
+                                            Remove from Favourites 
                                              </Button>
 
                                         :

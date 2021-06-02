@@ -25,6 +25,7 @@ const Login = () => {
 
     const handleSbmit = (e) => {
         e.preventDefault();
+
         const username = e.target.username.value;
         const password = e.target.password.value
 
@@ -35,8 +36,8 @@ const Login = () => {
 
         fetchServicePOSTnoCredentials(BASE_URL + LOGIN_USER, submitData)
         .then(res => {
+            
             if (res.error) throw new Error(res.error);
-
                 authDispatch({type: LOGIN_SUCCESS, payload: res});
                 notifyDispatch({type: SUCCESS_NOTIFICATION, payload: {message: 'Successfull login!'}});
         })

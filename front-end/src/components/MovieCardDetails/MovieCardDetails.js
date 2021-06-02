@@ -11,7 +11,8 @@ import {
     BASE_URL, GET_MOVIE_BY_ID, RATE_MOVIE,
     CHANGE_NOTE, GET_MOVIE, GET_MOVIE_ID_GUEST, MOVIE_FAVORITES
 } from '../../consts/endPointsAPI';
-import { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION, SUCCESS_ADD_MOVIE_FAVOURITES } from '../../actions/types';
+import { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION,
+     SUCCESS_ADD_MOVIE_FAVOURITES, SUCCESS_REMOVE_MOVIE_FAVOURITES } from '../../actions/types';
 
 const MovieCardDetails = ({
     match,
@@ -23,7 +24,7 @@ const MovieCardDetails = ({
     const [user, authDispatch] = auth;
 
     const [, notifyDispatch] = notification;
-    const favouriteMoviesIds = new Set(user.favouriteMovies);
+    const favouriteMoviesIds = user.favouriteMovies;
 
 
     const [movie, setMovie] = useState();
@@ -91,6 +92,11 @@ const MovieCardDetails = ({
             .then(res => {
                 if (res.error) throw new Error(res)
 
+                authDispatch({
+                    type: SUCCESS_REMOVE_MOVIE_FAVOURITES,
+                    payload: { movieId: idMovie }
+                });
+
                 notifyDispatch({ type: SUCCESS_NOTIFICATION, payload: { message: res } });
             })
             .then(() => history.push('/'))
@@ -105,7 +111,7 @@ const MovieCardDetails = ({
             .then(res => {
                 if (res.error) throw new Error(res)
 
-                favouriteMoviesIds.add(idMovie);
+                favouriteMoviesIds.push(idMovie);
 
                 authDispatch({
                     type: SUCCESS_ADD_MOVIE_FAVOURITES,
@@ -125,13 +131,12 @@ const MovieCardDetails = ({
             });
 
     }
-
     return (
         <>
 
             <MovieCardTemplate movie={movie} />
             {
-                user.username && favouriteMoviesIds.has(movie?.id.toString())
+                user.username && favouriteMoviesIds?.includes(movie?.id.toString())
                     ?
                     <section className={style.section}>
 
