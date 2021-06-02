@@ -35,7 +35,7 @@ const HomePage = () => {
                 notifyDispatch({ type: ERROR_NOTIFICATION, payload: { message: err.message } });
             });
 
-    }, [page])
+    }, [page, movie, user])
     
     if (user.username) {
         return (
